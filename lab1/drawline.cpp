@@ -111,9 +111,9 @@ display(void)
       int num_boxes = abs(dy) < abs(dx) ? abs(dx) : abs(dy);
       
       for (int i = 1; i < num_boxes; ++i){
-          double x = (2 * i * dx / num_boxes + (dx > 0)) / 2;
-          double y = (2 * i * dy / num_boxes + (dy > 0)) / 2;
-          drawpoint((int)(vertex[0][0] + x), (int)(vertex[0][1] + y), (double)(num_boxes - i) / num_boxes, 0.0, (double)i / num_boxes);
+          double x = i * dx / (double)num_boxes;
+          double y = i * dy / (double)num_boxes;
+          drawpoint((int)(vertex[0][0] + x + .5), (int)(vertex[0][1] + y + .5), (double)(num_boxes - i) / num_boxes, 0.0, (double)i / num_boxes);
       }
       
   }
