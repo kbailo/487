@@ -35,6 +35,7 @@ translate(float tx, float ty, float tz)
     CTM(0,3) += tx;
     CTM(1,3) += ty;
     CTM(2,3) += tz;
+    cout << CTM << endl;
 
   return;
 }
@@ -47,8 +48,12 @@ scale(float sx, float sy, float sz)
     s(0,0) = sx;
     s(1,1) = sy;
     s(2,2) = sz;
-    CTM.Identity();
-    CTM *= (s * copy);
+    s(3,3) = 0;
+    //CTM.Identity();
+    CTM *= (s);// * copy);
+    XVec4f col = copy.column(3);
+    CTM.setCol(3, col);
+    cout << CTM << endl;
   /* YOUR CODE HERE */
 
   return;
@@ -61,9 +66,10 @@ Xshearby(float hxy, float hxz)
     XMat4f s;
     s(0, 1) = hxy;
     s(0, 2) = hxz;
-    CTM.Identity();
-    CTM *= (s * copy);
+    //CTM.Identity();
+    CTM *= (s);// * copy);
   /* YOUR CODE HERE */
+    cout << CTM << endl;
 
   return;
 }
@@ -75,9 +81,10 @@ Yshearby(float hyx, float hyz)
     XMat4f s;
     s(1, 0) = hyx;
     s(1, 2) = hyz;
-    CTM.Identity();
-    CTM *= (s * copy);
+    //CTM.Identity();
+    CTM *= s; //* copy);
   /* YOUR CODE HERE */
+    cout << CTM << endl;
 
   return;
 }
@@ -89,9 +96,10 @@ Zshearby(float hzx, float hzy)
     XMat4f s;
     s(2, 0) = hzx;
     s(2, 1) = hzy;
-    CTM.Identity();
-    CTM *= (s * copy);
+    //CTM.Identity();
+    CTM *= (s);// * copy);
   /* YOUR CODE HERE */
+    cout << CTM << endl;
 
   return;
 }
@@ -106,8 +114,12 @@ rotateX(float theta)
     s(1,2) = -sin(theta);
     s(2,1) = sin(theta);
     s(2,2) =cos(theta);
+    s(3,3) = 0;
     CTM.Identity();
     CTM *= (s * copy);
+    XVec4f col = copy.column(3);
+    CTM.setCol(3, col);
+    cout << CTM << endl;
     
   return;
 }
@@ -122,8 +134,12 @@ rotateY(float theta)
     s(0,2) = -sin(theta);
     s(2,0) = sin(theta);
     s(2,2) =cos(theta);
+    s(3,3) = 0;
     CTM.Identity();
-    CTM *= (s * copy);
+    CTM *= (s* copy);
+    XVec4f col = copy.column(3);
+    CTM.setCol(3, col);
+    cout << CTM << endl;
   return;
 }
 
@@ -137,7 +153,11 @@ rotateZ(float theta)
     s(0,1) = -sin(theta);
     s(1,0) = sin(theta);
     s(1,1) =cos(theta);
-    CTM.Identity();
-    CTM *= (s * copy);
+    s(3,3) = 0;
+    //CTM.Identity();
+    CTM *= (s);// * copy);
+    XVec4f col = copy.column(3);
+    CTM.setCol(3,col);
+    cout << CTM << endl;
   return;
 }

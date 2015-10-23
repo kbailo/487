@@ -39,7 +39,7 @@ scale(unsigned char key)
     break;
   case 'h': // scale x-coord down 50%
   case 'x':
-          CTM.scale(.5, 1, 1);
+          CTM.scale(1/1.5, 1, 1);
     break;
   case 'k': // scale y-coord up 50%
   case 'Y':
@@ -48,7 +48,7 @@ scale(unsigned char key)
     break;
   case 'j': // scale y-coord down 50%
   case 'y':
-          CTM.scale(1, .5, 1);
+          CTM.scale(1, 1/1.5, 1);
     /* YOUR CODE HERE */
     break;
   case 'w': // scale z-coord down 50%
@@ -58,7 +58,7 @@ scale(unsigned char key)
     break;
   case 's': // scale z-coord up 50%
   case 'Z':
-          CTM.scale(1, 1, .5);
+          CTM.scale(1, 1, 1/1.5);
     /* YOUR CODE HERE */
     break;
   default:
@@ -75,22 +75,22 @@ rotate(unsigned char key)
   switch (key) {
   case 'l': // rotate ROTDEG degree cw around -z-axis
   case 'Z':
-          CTM.rotateZ(THETA);
+          CTM.rotateZ(-THETA);
     /* YOUR CODE HERE */
     break;
   case 'h': // rotate ROTDEG degree ccw around -z-axis
   case 'z':
-          CTM.rotateZ(-THETA);
+          CTM.rotateZ(THETA);
     /* YOUR CODE HERE */
     break;
   case 'k': // rotate ROTDEG degree cw around x-axis
   case 'X':
-          CTM.rotateX(THETA);
+          CTM.rotateX(-THETA);
     /* YOUR CODE HERE */
     break;
   case 'j': // rotate ROTDEG degree ccw around x-axis
   case 'x':
-          CTM.rotateX(-THETA);
+          CTM.rotateX(THETA);
     /* YOUR CODE HERE */
     break;
   case 'w': // rotate ROTDEG degree cw around y-axis
@@ -179,12 +179,12 @@ translate(unsigned char key)
     break;
   case 'w': // translate -DELTA along z-axis
   case 'z':
-          CTM.translate(0, 0, DELTA);
+          CTM.translate(0, 0, -DELTA);
     /* YOUR CODE HERE */
     break;
   case 's': // translate +DELTA along z-axis
   case 'Z':
-          CTM.translate(0, 0, -DELTA);
+          CTM.translate(0, 0, DELTA);
     /* YOUR CODE HERE */
     break;
   default:
