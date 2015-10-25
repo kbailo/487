@@ -19,13 +19,16 @@
 */
 #version 120
 
-
 void 
 main(void) 
 {
   vec4 position = gl_ModelViewMatrix * gl_Vertex;
   gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
-
+//    gl_FrontMaterial, gl_LightModel, and gl_LightSource[]
+    
+//    gl_FrontColor.rgb = gl_Color.rgb * diffuse;
+    
+    
   /* TASK 7: YOUR CODE HERE
    *
    * You may want to consult the lecture notes on Gouraud shading.
@@ -47,5 +50,5 @@ main(void)
    * OpenGL adds contribution to the total color whenever
    * dot(n,l) != 0, not just when dot(n,l) < 0.
    */
-  gl_FrontColor.a = 1.0;
+  gl_FrontColor.a = 0.0;
 }
