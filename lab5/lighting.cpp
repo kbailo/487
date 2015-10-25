@@ -135,6 +135,9 @@ init_properties()
    * You are welcome to experiment with different values for the settings.
    */
     glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+    glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+    glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
     //material
     
   /* specularity computed taking into account eye location
@@ -173,25 +176,32 @@ init(void)
    * before viewing transform, others after.
   */
     //initialize eye light
-    //glLightfv(lightname,param,value) 
-    //glEnable(GL_LIGHTING);
-    //glEnable(GL_LIGHT0);
+    //glLightfv(lightname,param,value)
+    
+    glLightfv(EYELIGHT, GL_SPOT_DIRECTION, eyelight_position);
+    glLightfv(EYELIGHT, GL_POSITION, eyelight_position);
   setup_view();           // in viewing.cpp
+    glLightfv(SUNLIGHT, GL_POSITION, sunlight_position);
+    glLightfv(OBJLIGHT, GL_POSITION, objlight_position);
   /* . . . AND/OR HERE */
     //initialize sun light
-
+    
+    
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   /* YOUR CODE HERE - enable various other pieces of OpenGL state
    * 1. Depth test, so that OpenGL has a sense of depth (Cf. glEnable())
-glEnable(GL_DEPTH_TEST);
    * 2. Automatic normalization of normals (Cf. glEnable())
-glEnable(GL_NORMALIZE)
    * 3. Back face culling (Cf. glEnable())
    * 4. Smooth shading of polygons (Cf. glShadeModel())
    * 5. Filled rendering of polygons (Cf. glPolygonMode())
   */
-
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_NORMALIZE);
+    glEnable(GL_CULL_FACE);
+    glShadeModel(GL_SMOOTH);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    
   glColor4f(0.0, 0.0, 1.0, 0.4);
   initWorld(); // TODO in objects.cpp
 
@@ -357,9 +367,12 @@ kbd(unsigned char key, int x, int y)
    * others only if the camera is moved, or some others may never need to be 
    * moved at all.
    */
+    
+    glLightfv(OBJLIGHT, GL_POSITION, objlight_position);
   if (mode == MOVECAM) {
     setup_view();             // in viewing.cpp
     /* . . . AND/OR HERE . . . */
+      glLightfv(SUNLIGHT, GL_POSITION, sunlight_position);
 
     glMultMatrixd(cmodview); // play back all modeling transforms
   }

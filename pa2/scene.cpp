@@ -414,7 +414,27 @@ X3IndexedFaceSet::Render() const
    * of vertices in a loop within the glBegin(GL_TRIANGLES)
    * rendering mode.  Remember to specify glNormal()
    * before each call to glVertex().
-  */
+   */
+    
+    glBegin(GL_QUADS);
+    for (unsigned k = 0; k < quads_.size(); ++k) {
+        for(unsigned i = 0; i < 4; ++i){
+            glNormal3fv(normals_[quads_[k](i)]);
+            glVertex3fv(coordinate_->point(quads_[k](i)));
+        }
+    }
+    glEnd();
+    glBegin(GL_TRIANGLES);
+    for (unsigned k = 0; k < triangles_.size(); ++k) {
+        for(unsigned i = 0; i < 3; ++i){
+            glNormal3fv(normals_[triangles_[k](i)]);
+            glVertex3fv(coordinate_->point(triangles_[k](i)));
+        }
+    }
+    glEnd();
+    
+    
+    
   return;
 }
 
@@ -428,6 +448,49 @@ X3IndexedFaceSet::Add(X3NodeType type, X3Node* node)
 
     cerr << (int)triangles_.size() << " triangles and "
          << (int)quads_.size() << " quads." << endl;
+      for(unsigned i = 0; i < triangles_.size(); ++i){
+          float qx, qy, qz, px, py, pz;
+          qx = coordinate_->point(triangles_[i][1])[0] - coordinate_->point(triangles_[i][0])[0];
+          qy = coordinate_->point(triangles_[i][1])[1] - coordinate_->point(triangles_[i][0])[1];
+          qz = coordinate_->point(triangles_[i][1])[2] - coordinate_->point(triangles_[i][0])[2];
+          px = coordinate_->point(triangles_[i][2])[0] - coordinate_->point(triangles_[i][0])[0];
+          py = coordinate_->point(triangles_[i][2])[1] - coordinate_->point(triangles_[i][0])[1];
+          pz = coordinate_->point(triangles_[i][2])[2] - coordinate_->point(triangles_[i][0])[2];
+//          Qx = fVert2[0]-fVert1[0];
+//          Qy = fVert2[1]-fVert1[1];
+//          Qz = fVert2[2]-fVert1[2];
+//          Px = fVert3[0]-fVert1[0];
+//          Py = fVert3[1]-fVert1[1];
+//          Pz = fVert3[2]-fVert1[2];
+          float nx, ny, nz;
+          nx = py*qz - pz*qy;
+          ny = pz*qx - px*qz;
+          nz = px*qy - py*qx;
+          XVec3f normal = XVec3f(nx, ny, nz);
+          normal.norm();
+          normals_[triangles_[i](0)] += normal;
+          normals_[triangles_[i](1)] += normal;
+          normals_[triangles_[i](2)] += normal;
+          
+//          *fNormalX = Py*Qz - Pz*Qy;
+//          *fNormalY = Pz*Qx - Px*Qz;
+//          *fNormalZ = Px*Qy - Py*Qx;
+      }
+      XVec3f normal = XVec3f(0,0,0);
+      for (unsigned i = 0; i< quads_.size(); ++i){
+          for (int j=0; j<4; j++)
+          {
+              normal += coordinate_->point(quads_[i](j)).cross( coordinate_->point(quads_[i]((j+1)%4))) ; // cross product
+          }
+          normal.norm();
+          for (int j = 0; j < 4; ++j){
+              normals_[quads_[i](j)] += normal;
+          }
+      }
+      for(unsigned i = 0; i < normals_.size(); ++i){
+          normals_[i].norm();
+      }
+      
 
     /* TASK 6: YOUR CODE HERE:
      * Accumulate normals for every vertex from every triangle
@@ -550,6 +613,10 @@ X3Material::Render() const
    * Also assume materials are two sided and the given properties
    * apply to both sides.
   */
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specular_color_);
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 128 * shininess_);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuse_color_);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, emissive_color_ * ambient_intensity_);
 
   return;
 }
@@ -746,6 +813,16 @@ X3Transform::Render() const
    * as follows: P' = T * C * R * S * - C * P
    * See explanation on notation in Section 10.4.4 of the X3D specs
   */
+    glPushMatrix();
+    glTranslatef(translation_(0), translation_(1), translation_(2));
+    glTranslatef(center_(0), center_(1), center_(2));
+    glRotatef((rotation_.angle_rad * 180/M_PI), rotation_.axis(0), rotation_.axis(1), rotation_.axis(2));
+    glScalef(scale_(0), scale_(1), scale_(2));
+    glTranslatef(-center_(0), -center_(1), -center_(2));
+    X3GroupingNode::Render();
+    glPopMatrix();
+    
+
 
   return;
 }
@@ -760,6 +837,14 @@ X3Transform::SetupLights(int* light_count) const
    * calling X3GroupingNode::Render(), you call X3GroupingNode::SetupLights()
    * to set up the children's lights.
   */
+    glPushMatrix();
+    glTranslatef(translation_(0), translation_(1), translation_(2));
+    glTranslatef(center_(0), center_(1), center_(2));
+    glRotatef((rotation_.angle_rad * 180/M_PI), rotation_.axis(0), rotation_.axis(1), rotation_.axis(2));
+    glScalef(scale_(0), scale_(1), scale_(2));
+    glTranslatef(-center_(0), -center_(1), -center_(2));
+    X3GroupingNode::SetupLights(light_count);
+    glPopMatrix();
 
   return;
 }
@@ -797,16 +882,22 @@ X3Viewpoint::track_latlong(float dx, float dy)
    * world when Render() is called.
   */
 //    rotate in xvec3.h
-    x_ -= dx;
+    x_ += dx;
     y_ += dy;
     
     float radius_x = sqrt(position_(0) * position_(0) + position_(2) * position_(2));
-    position_(0) = radius_x * sin(x_);
-    position_(2) = radius_x * cos(x_);
+    position_(0) = sin(x_) * radius_x;
+    position_(2) = cos(x_) * radius_x;
     
     float radius_y = sqrt(position_(1) * position_(1) + position_(2) * position_(2));
     position_(1) = radius_y * sin(y_);
-    position_(2) = radius_y * cos(y_);
+    position_(2) = position_(2) < 0 ? -radius_y * cos(y_) : radius_y * cos(y_);
+    
+    if(cos(y_) < 0){
+        up_ = XVec3f(0.0, -1.0, 0.0);
+    }
+    else
+        up_ = XVec3f(0.0, 1.0, 0.0);
 
   return;
 }
@@ -819,8 +910,7 @@ X3Viewpoint::dolly(float dz)
    * some states to effect camera movement along the
    * gaze direction when Render() is called.
   */
-    position_ += dz* position_;
-//    position_(2) += dz;
+    position_ += dz * position_;
   return;
 }
 

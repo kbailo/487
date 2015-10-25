@@ -84,7 +84,25 @@ initWorld()
    * length, i.e., normalized. You can either do manually or by
    * enabling an OpenGL mode (find it!).
    */
-
+    unsigned char x, y, z;
+    unsigned char arr[STACKS*2*SLICES*3];
+    for(int i = 0; i < SLICES; ++i){
+        for(int j = 0; j < STACKS; ++j){
+            x = sin(M_PI*(1-j/STACKS)) * cos(2*M_PI/SLICES*i);
+            y = sin(M_PI*(1-j/STACKS)) * sin(2*M_PI/SLICES*i);
+            z = M_PI*(1-j/STACKS);
+            arr[(STACKS*i*2 + j*2)*3] = x;
+            arr[(STACKS*i*2 + j*2)*3 + 1] = y;
+            arr[(STACKS*i*2 + j*2)*3 + 2] = z;
+            x = sin(M_PI*(1-j/STACKS)) * cos(2*M_PI/SLICES*i+1);
+            y = sin(M_PI*(1-j/STACKS)) * sin(2*M_PI/SLICES*i+1);
+            z = M_PI*(1-j/STACKS);
+            arr[(STACKS*i*2 + j*2+1)*3] = x;
+            arr[(STACKS*i*2 + j*2+1)*3 + 1] = y;
+            arr[(STACKS*i*2 + j*2+1)*3 + 2] = z;
+        }
+    }
+    glDrawElements(GL_TRIANGLE_STRIP, STACKS*2*SLICES*3, GL_UNSIGNED_BYTE, arr);
   return;
 }
   
@@ -104,6 +122,7 @@ drawSphere(double radius)
    * terms of element count, or your GPU will lock
    * up and you'd have to reboot your machine.
   */
+    
 
   return;
 }
@@ -129,7 +148,7 @@ drawWorld(int w, int h)
      * you comment out the call to gluSphere and uncomment
      * the call to drawSphere before you turn in your lab.
     */
-    //gluSphere(q, sphere_radius, SLICES, STACKS);
+//    gluSphere(q, sphere_radius, SLICES, STACKS);
     drawSphere(sphere_radius);
   }
   glTranslatef(-1.2, -0.5, 0.0);
