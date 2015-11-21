@@ -346,7 +346,7 @@ kbd(unsigned char key, int x, int y)
   case 't':
     in_texture_mode = !in_texture_mode;
     if (in_texture_mode) {
-      glEnable(GL_TEXTURE_2D); 
+      glEnable(GL_TEXTURE_2D);
     } else {
       glDisable(GL_TEXTURE_2D);
     }

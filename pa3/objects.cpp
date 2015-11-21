@@ -45,6 +45,7 @@ extern GLuint *tods;
 extern int ntods;
 extern GLuint *nmods;
 extern int nnmods;
+GLuint vaods[NOBJS];
 
 enum { OBJ, IDX, NOBS };
 
@@ -105,7 +106,9 @@ init_sphere()
    * which interleaves the position and texcoords of
    * each vertex.
   */
-  vertices = (sphere_vertex_t *) malloc((SLICES+1)*(STACKS+1)*sizeof(sphere_vertex_t));
+    vertices = (sphere_vertex_t *) glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+
+  //vertices = (sphere_vertex_t *) malloc((SLICES+1)*(STACKS+1)*sizeof(sphere_vertex_t));
   
   /* Sphere */                          // we'll do the north pole together
   for (i = SLICES+1, theta = inc_theta; // with the south pole later
@@ -123,7 +126,7 @@ init_sphere()
 
       /* TASK 1: copy your code from Lab6 */
       /* assign texture coordinates per vertex */
-
+        vertices[i].texcoords = XVec2f(phi/fullcircle, theta/laststack);
     }
   }
 
@@ -136,6 +139,8 @@ init_sphere()
 
     /* TASK 1: copy your code from Lab6 */
     /* assign texture coordinates to the pole vertices */
+      vertices[j].texcoords = XVec2f(j/SLICES, 0.0);
+      vertices[i].texcoords = XVec2f(j/SLICES, 1.0);
 
   }
 
@@ -151,10 +156,10 @@ init_sphere()
    *
    * Release the mapped buffer.
   */
-  glBufferSubData(GL_ARRAY_BUFFER, 0,
-               (SLICES+1)*(STACKS+1)*sizeof(sphere_vertex_t), vertices);
-  free(vertices);
-
+//  glBufferSubData(GL_ARRAY_BUFFER, 0,
+//               (SLICES+1)*(STACKS+1)*sizeof(sphere_vertex_t), vertices);
+//  free(vertices);
+    glUnmapBuffer(GL_ARRAY_BUFFER);
   /* TASK 5: YOUR CODE HERE
    * get shader vertex position and normal attribute locations
    */
@@ -199,7 +204,9 @@ init_sphere()
    * set to BYTE offset from the start of the mapped buffer
    * object.
   */
-
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glTexCoordPointer(2, GL_FLOAT, sizeof(sphere_vertex_t), (GLvoid*)(sizeof(XVec3f)));
+    
   /* TASK 6: YOUR CODE HERE
    *
    * Replace the client-side vertex texture coordinates attribute
@@ -228,8 +235,8 @@ init_sphere()
    * allocate enough space for the index array
    * for use by glDrawElement().
    */
-  vertidx = (GLuint *) malloc((SLICES+1)*STACKS*2*sizeof(GLuint));
-
+  //vertidx = (GLuint *) malloc((SLICES+1)*STACKS*2*sizeof(GLuint));
+    vertidx = (GLuint *) glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
   // triangle strip
   //   - the poles cannot use triangle fan due to texcoords
   midrift = STACKS*(SLICES+1);  
@@ -245,11 +252,11 @@ init_sphere()
    *
    * Release the mapped index buffer.
   */
-  glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0,
-                  (SLICES+1)*STACKS*2*sizeof(GLuint),
-                  vertidx);
-  free(vertidx);
-  
+//  glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0,
+//                  (SLICES+1)*STACKS*2*sizeof(GLuint),
+//                  vertidx);
+//  free(vertidx);
+  glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
   return true;
 }
 
@@ -271,6 +278,119 @@ draw_sphere()
 bool
 init_cube()
 {
+    GLuint vbods [NOBS];
+    glGenBuffers(NOBS, vbods);
+    if ((gl_error = glGetError()) != GL_NO_ERROR) {
+        cerr << "GenBuffers sphere: [Error "
+        << gl_error << "] " << gluGetString(gl_error) << endl;
+        exit(1);
+    }
+    
+    glBindBuffer(GL_ARRAY_BUFFER, vbods[OBJ]);
+    if ((gl_error = glGetError()) != GL_NO_ERROR) {
+        cerr << "BindBuffer sphere: [Error "
+        << gl_error << "] " << gluGetString(gl_error) << endl;
+        exit(1);
+    }
+    glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(sphere_vertex_t), 0, GL_STATIC_DRAW);
+    if ((gl_error = glGetError()) != GL_NO_ERROR) {
+        cerr << "BufferData sphere: [Error "
+        << gl_error << "] " << gluGetString(gl_error) << endl;
+        exit(1);
+    }
+    sphere_vertex_t *vertices;
+    vertices = (sphere_vertex_t *) glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+    vertices[0].position = XVec3f(-1.0, -1.0, -1.0);//1
+    vertices[0].texcoords = XVec2f(1.0, 1.0);
+    vertices[1].position = XVec3f(-1.0, -1.0, 1.0);
+    vertices[1].texcoords = XVec2f(0.0, 1.0);
+    vertices[2].position = XVec3f(-1.0, 1.0, 1.0);
+    vertices[2].texcoords = XVec2f(0.0, 0.0);
+    vertices[3].position = XVec3f(1.0, 1.0, -1.0);//2
+    vertices[3].texcoords = XVec2f(0.0, 1.0);
+    vertices[4].position = XVec3f(-1.0, -1.0, -1.0);
+    vertices[4].texcoords = XVec2f(1.0, 0.0);
+    vertices[5].position = XVec3f(-1.0, 1.0, -1.0);
+    vertices[5].texcoords = XVec2f(1.0, 1.0);
+    vertices[6].position = XVec3f(1.0, -1.0, 1.0);//3
+    vertices[6].texcoords = XVec2f(0.0, 0.0);
+    vertices[7].position = XVec3f(-1.0, -1.0, -1.0);
+    vertices[7].texcoords = XVec2f(1.0, 1.0);
+    vertices[8].position = XVec3f(1.0, -1.0, -1.0);
+    vertices[8].texcoords = XVec2f(0.0, 1.0);
+    vertices[9].position = XVec3f(1.0, 1.0, -1.0);//4
+    vertices[9].texcoords = XVec2f(0.0, 1.0);
+    vertices[10].position = XVec3f(1.0, -1.0, -1.0);
+    vertices[10].texcoords = XVec2f(0.0, 0.0);
+    vertices[11].position = XVec3f(-1.0, -1.0, -1.0);
+    vertices[11].texcoords = XVec2f(1.0, 0.0);
+    vertices[12].position = XVec3f(-1.0, -1.0, -1.0);//5
+    vertices[12].texcoords = XVec2f(1.0, 1.0);
+    vertices[13].position = XVec3f(-1.0, 1.0, 1.0);
+    vertices[13].texcoords = XVec2f(0.0, 0.0);
+    vertices[14].position = XVec3f(-1.0, 1.0, -1.0);
+    vertices[14].texcoords = XVec2f(1.0, 0.0);
+    vertices[15].position = XVec3f(1.0, -1.0, 1.0);//6
+    vertices[15].texcoords = XVec2f(0.0, 0.0);
+    vertices[16].position = XVec3f(-1.0, -1.0, 1.0);
+    vertices[16].texcoords = XVec2f(1.0, 0.0);
+    vertices[17].position = XVec3f(-1.0, -1.0, -1.0);
+    vertices[17].texcoords = XVec2f(1.0, 1.0);
+    vertices[18].position = XVec3f(-1.0, 1.0, 1.0);//7
+    vertices[18].texcoords = XVec2f(1.0, 0.0);
+    vertices[19].position = XVec3f(-1.0, -1.0, 1.0);
+    vertices[19].texcoords = XVec2f(1.0, 1.0);
+    vertices[20].position = XVec3f(1.0, -1.0, 1.0);
+    vertices[20].texcoords = XVec2f(0.0, 1.0);
+    vertices[21].position = XVec3f(1.0, 1.0, 1.0);//8
+    vertices[21].texcoords = XVec2f(1.0, 0.0);
+    vertices[22].position = XVec3f(1.0, -1.0, -1.0);
+    vertices[22].texcoords = XVec2f(0.0, 1.0);
+    vertices[23].position = XVec3f(1.0, 1.0, -1.0);
+    vertices[23].texcoords = XVec2f(0.0, 0.0);
+    vertices[24].position = XVec3f(1.0, -1.0, -1.0);//9
+    vertices[24].texcoords = XVec2f(0.0, 1.0);
+    vertices[25].position = XVec3f(1.0, 1.0, 1.0);
+    vertices[25].texcoords = XVec2f(1.0, 0.0);
+    vertices[26].position = XVec3f(1.0, -1.0, 1.0);
+    vertices[26].texcoords = XVec2f(1.0, 1.0);
+    vertices[27].position = XVec3f(1.0, 1.0, 1.0);//10
+    vertices[27].texcoords = XVec2f(0.0, 1.0);
+    vertices[28].position = XVec3f(1.0, 1.0, -1.0);
+    vertices[28].texcoords = XVec2f(0.0, 0.0);
+    vertices[29].position = XVec3f(-1.0, 1.0, -1.0);
+    vertices[29].texcoords = XVec2f(1.0, 0.0);
+    vertices[30].position = XVec3f(1.0, 1.0, 1.0);//11
+    vertices[30].texcoords = XVec2f(0.0, 1.0);
+    vertices[31].position = XVec3f(-1.0, 1.0, -1.0);
+    vertices[31].texcoords = XVec2f(1.0, 0.0);
+    vertices[32].position = XVec3f(-1.0, 1.0, 1.0);
+    vertices[32].texcoords = XVec2f(1.0, 1.0);
+    vertices[33].position = XVec3f(1.0, 1.0, 1.0);//12
+    vertices[33].texcoords = XVec2f(0.0, 0.0);
+    vertices[34].position = XVec3f(-1.0, 1.0, 1.0);
+    vertices[34].texcoords = XVec2f(1.0, 0.0);
+    vertices[35].position = XVec3f(1.0, -1.0, 1.0);
+    vertices[35].texcoords = XVec2f(0.0, 1.0);
+    
+    glUnmapBuffer(GL_ARRAY_BUFFER);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, sizeof(sphere_vertex_t), 0);
+    glEnableClientState(GL_NORMAL_ARRAY);
+    glNormalPointer(GL_FLOAT, sizeof(sphere_vertex_t), 0);
+    
+    glEnable(GL_NORMALIZE);
+    
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glTexCoordPointer(2, GL_FLOAT, sizeof(sphere_vertex_t), (GLvoid*)(sizeof(XVec3f)));
+    
+    glBindBuffer(GL_ARRAY_BUFFER, vbods[IDX]);
+    glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(GLuint), 0, GL_STATIC_DRAW);
+    
+//    vertidx = (GLuint *) glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_WRITE_ONLY);
+    
+    glUnmapBuffer(GL_ARRAY_BUFFER);
+
   /*
    * TASK 2: YOUR CODE HERE
    * Initialize a cube.
@@ -298,6 +418,7 @@ draw_cube()
    * TASK 2: YOUR CODE HERE
    * Draw your cube.
    */
+     glDrawArrays(GL_TRIANGLES, 0, 36);
 
   return;
 }
@@ -317,7 +438,11 @@ init_world(objType drawobject)
     break;
   default:
     scene = true;
-
+          glGenVertexArrays(2, vaods);
+          glBindVertexArray(vaods[SPHERE]);
+          init_sphere();
+          glBindVertexArray(vaods[CUBE]);
+          init_cube();
     /* TASK 3: YOUR CODE HERE
      *
      * Generate NOBJS vertex-array objects, then
@@ -334,11 +459,13 @@ void
 draw_world(objType drawobject)
 {
   switch (drawobject) {
-  case SPHERE: 
+  case SPHERE:
+          glBindVertexArray(vaods[SPHERE]);
+
     /* TASK 3: YOUR CODE HERE
      * Bind the vertex array object for sphere.
      *
-     * TASK 4: YOUR CODE HERE
+     * TASK 4: YOUR CODE HERE // 2 lines
      * Bind the texture for sphere.
      *
      * TASK 7: YOUR CODE HERE
@@ -347,7 +474,8 @@ draw_world(objType drawobject)
     draw_sphere();
     break;
 
-  case CUBE: 
+  case CUBE:
+          glBindVertexArray(vaods[CUBE]);
     /* TASK 3: YOUR CODE HERE
      * Bind the vertex array object for cube.
      *

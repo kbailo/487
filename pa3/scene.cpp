@@ -119,6 +119,44 @@ load_texture(LTGA *texture)
    *
    * Don't forget to enable texturing. 
    */
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
+    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP,
+                    GL_TRUE);
+    if (texture->GetImageType() == itRGB){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture->GetImageWidth(), texture->GetImageHeight(), 0, GL_RGB,
+                     GL_UNSIGNED_BYTE, 0);
+        
+    }
+    else if (texture->GetImageType() == itGreyscale){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, texture->GetImageWidth(), texture->GetImageHeight(), 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, 0);
+        
+    }
+    else{
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texture->GetImageWidth(), texture->GetImageHeight(), 0, GL_RGBA,
+                     GL_UNSIGNED_BYTE, 0);
+        
+    }
+    /* Set texture parameters */
+    // linearly interpolate between 4 nearest texel values while
+    // shrinking or stretching
+    
+    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    
+    
+    // clamp texture coordinates (s,t) to [0,1] each
+    /* BGIN SOLUTION */
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    /* END SOLUTION */
+    
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    
+    // perspective correct interpolation
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
   return true;
 }
@@ -136,6 +174,7 @@ toggle_mipmapping()
      * Turn on mipmapping using glTexParameteri().
      * Assume mipmap has been generated in load_texture().
      */
+       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
   } else {
     // linearly interpolate between 4 nearest texel values while 
     // shrinking or stretching
@@ -159,7 +198,10 @@ void *
 pbo_alloc(GLuint size)
 {
   /* TASK 1: Replace the call to malloc with your code from lab6 */
-  return ((void *)malloc(size));
+//  return ((void *)malloc(size));
+    glBufferData(GL_PIXEL_UNPACK_BUFFER, size,
+                 NULL, GL_STREAM_DRAW);
+    return (glMapBuffer(GL_PIXEL_UNPACK_BUFFER, GL_WRITE_ONLY));
 }
 
 void
@@ -198,8 +240,12 @@ init_textures(int ntexs, char *texfiles[])
    * Generate a pixel buffer object and
    * bind it to the pixel unpack buffer
    */
+    uint pbod;
+    glGenBuffers(1, &pbod);
+    glBindBuffer(GL_PIXEL_UNPACK_BUFFER, pbod);
+    
 
-  /* TASK 4: YOUR CODE HERE
+  /* TASK 4: YOUR CODE HERE // 3 lines
    * Generate ntods texture objects (tods) to load ntexs textures,
    * instead of just loading one texture into tod.  Both "ntods"
    * and "tods" are global variables.
@@ -215,12 +261,14 @@ init_textures(int ntexs, char *texfiles[])
    * otherwise glTexImage2D() won't have
    * access to the buffer.
    */
-  
+  glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
   /* 
    * TASK 1: *adapt* from Lab6
    * Generate a texture object, put the descriptor
    * in tods[0] and bind it to the 2D texture object
    */
+//    glGenTextures(1, &tods[0]);
+//    glBindTexture(GL_TEXTURE_2D, tods[0]);
 
   /* TASK 4: YOUR CODE HERE
    * Replace the above TASK 1 by binding each
@@ -237,7 +285,7 @@ init_textures(int ntexs, char *texfiles[])
    * buffer object, which also automatically unbinds
    * the pixel unpack buffer.
    */
-  
+  glDeleteBuffers(1, &pbod);
   /* TASK 6:
    * Pass the default texture unit (GL_TEXTURE0)
    * as a uniform variable to the shader.
@@ -520,9 +568,9 @@ main(int argc, char *argv[])
    * TASK 2: drawobject = CUBE
    * TASK 3: drawobject = NOBJS;
    */
-  drawobject = SPHERE;
-     END PROBLEM*/
-  if (init_lights() && 
+  drawobject = NOBJS;
+//     END PROBLEM*/
+  if (init_lights() &&
       init_textures(ntexs+1, texfiles) &&
       init_nmaps(nnmaps+1, nmapfiles) &&
       init_world(drawobject)) {
