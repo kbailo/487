@@ -58,7 +58,7 @@ enum ShaderModeEnum {
   NMAP, // BLINN
   PHONG_NMAP,
   NSHADERS
-} shader_mode = NONE; // TASK 5: replace NONE with NMAP
+} shader_mode = NMAP; // TASK 5: replace NONE with NMAP
 shader_t shaders[] = {
   { NULL, NULL },
   { (char *)"gouraud", (char *)"gouraud" },
@@ -250,10 +250,14 @@ init_textures(int ntexs, char *texfiles[])
    * instead of just loading one texture into tod.  Both "ntods"
    * and "tods" are global variables.
   */
+    
+    
   ntods = ntexs;
   tods = (GLuint *) malloc(sizeof(GLuint)*ntods);
-
-  read_texture(&texture, texfiles[0]);
+    glGenTextures(ntods, tods);
+    
+    for(int i = 0; i < ntods; ++i){
+        read_texture(&texture, texfiles[i]);
 
   /* 
    * TASK 1: copy from Lab6
@@ -261,23 +265,22 @@ init_textures(int ntexs, char *texfiles[])
    * otherwise glTexImage2D() won't have
    * access to the buffer.
    */
-  glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
+        glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
   /* 
    * TASK 1: *adapt* from Lab6
    * Generate a texture object, put the descriptor
    * in tods[0] and bind it to the 2D texture object
    */
-//    glGenTextures(1, &tods[0]);
-//    glBindTexture(GL_TEXTURE_2D, tods[0]);
-
+    
+        glBindTexture(GL_TEXTURE_2D, tods[i]);
+    
   /* TASK 4: YOUR CODE HERE
    * Replace the above TASK 1 by binding each
    * of the ntods elements of tods to the
    * 2D texture object
    */
-  
-  load_texture(&texture);
-
+        load_texture(&texture);
+    }
   /*
    * TASK 1: copy from Lab6
    * Now that the texture has been unpacked from the
@@ -285,7 +288,8 @@ init_textures(int ntexs, char *texfiles[])
    * buffer object, which also automatically unbinds
    * the pixel unpack buffer.
    */
-  glDeleteBuffers(1, &pbod);
+        glDeleteBuffers(1, &pbod);
+        
   /* TASK 6:
    * Pass the default texture unit (GL_TEXTURE0)
    * as a uniform variable to the shader.
