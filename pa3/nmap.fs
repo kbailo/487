@@ -30,6 +30,8 @@ varying vec3 normal, view, light;
  * input interpolated texture coordinates
  * and uniform texture sampler
 */
+//attribute vec2 va_TexCoords;
+//varying vec2 texcoords;
 
 /*
  * TASK 7: YOUR CODE HERE
@@ -60,7 +62,7 @@ main(void)
    * the texture coordinates passed in by the vertex shader.
   */
   gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-
+//  gl_FragColor = vec4(abs(n),1.0);
   /*
    * Blend/modulate the texel with per-fragment Blinn lighting computation.
    * All of normal, light, and view vectors are assumed to be in tangent space.

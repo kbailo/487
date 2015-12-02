@@ -169,6 +169,7 @@ init_sphere()
   /* TASK 6: YOUR CODE HERE
    * get shader vertex texture coordinates locations
    */
+//    int vTex = glGetAttribLocation(spd, "va_TexCoords");
 
   /* TASK 7: YOUR CODE HERE
    * get shader tangent attribute locations
@@ -220,6 +221,10 @@ init_sphere()
    * Replace the client-side vertex texture coordinates attribute
    * array and pointer to it in TASK 1 above with shader version.
    */
+    
+//    glEnableVertexAttribArray(vTex);
+//    glVertexAttribPointer(vTex, 2, GL_FLOAT, GL_FALSE,
+//                          0, 0);
 
   /* TASK 7: YOUR CODE HERE
    * Enable shader vertex tangent attribute
@@ -384,7 +389,8 @@ init_cube()
     glUnmapBuffer(GL_ARRAY_BUFFER);
     int vPos = glGetAttribLocation(spd, "va_Position");
     int vNormal = glGetAttribLocation(spd, "va_Normal");
-//    
+//    int vTex = glGetAttribLocation(spd, "va_TexCoords");
+//
 //    glEnableClientState(GL_VERTEX_ARRAY);
 //    glVertexPointer(3, GL_FLOAT, sizeof(sphere_vertex_t), 0);
 //    glEnableClientState(GL_NORMAL_ARRAY);
@@ -396,10 +402,18 @@ init_cube()
     glVertexAttribPointer(vPos, 3, GL_FLOAT, GL_FALSE,  sizeof(sphere_vertex_t), 0);
     glEnableVertexAttribArray(vNormal);
     glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, sizeof(sphere_vertex_t), 0);
+    
+    
 
     
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     glTexCoordPointer(2, GL_FLOAT, sizeof(sphere_vertex_t), (GLvoid*)(sizeof(XVec3f)));
+//
+//    glEnableVertexAttribArray(vTex);
+//    glVertexAttribPointer(vTex, 2, GL_FLOAT, GL_FALSE,
+//                          0, 0);
+//    
+    
     
     glBindBuffer(GL_ARRAY_BUFFER, vbods[IDX]);
     glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(GLuint), 0, GL_STATIC_DRAW);

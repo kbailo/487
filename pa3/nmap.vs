@@ -35,6 +35,8 @@ attribute vec3 va_Normal;
  * from the application and pass it
  * along to the fragment shader.
 */
+attribute vec2 va_TexCoords;
+varying vec2 texcoords;
 
 /* TASK 7: YOUR CODE HERE
  * Input tangent and pass tangent-space
@@ -57,6 +59,7 @@ main(void)
    * pass texture coordinates from application
    * to the fragment shader.
   */
+//    texcoords = va_TexCoords;
 
   /* TASK 7: YOUR CODE HERE
    *

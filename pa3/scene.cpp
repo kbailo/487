@@ -294,7 +294,9 @@ init_textures(int ntexs, char *texfiles[])
    * Pass the default texture unit (GL_TEXTURE0)
    * as a uniform variable to the shader.
    */
-  
+    
+//    GLuint texid = glGetUniformLocation(GL_TEXTURE0, "mytexture");
+//    glUniform1i(texid,0);
   return true;
 }
 
