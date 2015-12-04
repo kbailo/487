@@ -188,6 +188,36 @@ multShadowMat(GLfloat *receiverWall)
    * Set the 16 components of the shadow matrix using
    * receiverWall and the global lightPos
   */
+    float  dot;
+    
+    dot = receiverWall[0] * lightPos[0] +
+    receiverWall[1] * lightPos[1] +
+    receiverWall[2] * lightPos[2] +
+    receiverWall[3] * lightPos[3];
+    
+    shadowMat(0,0) = dot - lightPos[0] * receiverWall[0];
+    shadowMat(0,1) = 0.0 - lightPos[0] * receiverWall[1];
+    shadowMat(0,2) = 0.0 - lightPos[0] * receiverWall[2];
+    shadowMat(0,3) = 0.0 - lightPos[0] * receiverWall[3];
+    
+    shadowMat(1,0) = 0.0 - lightPos[1] * receiverWall[0];
+    shadowMat(1,1) = dot - lightPos[1] * receiverWall[1];
+    shadowMat(1,2) = 0.0 - lightPos[1] * receiverWall[2];
+    shadowMat(1,3) = 0.0 - lightPos[1] * receiverWall[3];
+    
+    shadowMat(2,0) = 0.0 - lightPos[2] * receiverWall[0];
+    shadowMat(2,1) = 0.0 - lightPos[2] * receiverWall[1];
+    shadowMat(2,2) = dot - lightPos[2] * receiverWall[2];
+    shadowMat(2,3) = 0.0 - lightPos[2] * receiverWall[3];
+    
+    shadowMat(3,0) = 0.0 - lightPos[3] * receiverWall[0];
+    shadowMat(3,1) = 0.0 - lightPos[3] * receiverWall[1];
+    shadowMat(3,2) = 0.0 - lightPos[3] * receiverWall[2];
+    shadowMat(3,3) = dot - lightPos[3] * receiverWall[3];
+    
+
+    
+    
 
   /* add the transformation to the ModelView matrix */
   glMultMatrixf(shadowMat);
@@ -289,6 +319,7 @@ drawScene()
        * Set the stencil buffer operation to always accept
        * a fragment and set the reference value to 1
        */
+        glStencilFunc(GL_ALWAYS, 1, 1);
       
       /* TASK 2: YOUR CODE HERE: Clipped Shadows
        *
@@ -299,6 +330,7 @@ drawScene()
        * stencil and depth tests pass, replace the stencil buffer
        * value with ref value specified previously (1).
        */
+        glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
       
       // draw the wall into stencil buffer only, not depth and color buffers
       glDisable(GL_DEPTH_TEST);
@@ -314,6 +346,8 @@ drawScene()
        * values there are 1 and 0 everywhere else. Use 1 as the
        * stencil mask
        */
+        
+        glStencilFunc(GL_EQUAL, 1, 1);
       
       // shadows: draw the occluders in black,
       // projected onto the specified plane/wall
@@ -494,7 +528,24 @@ display()
      * buffer calls, so you should be able to replace them with a
      * one-to-one mapping.)
     */
-    drawScene(); // don't forget to call drawScene() for each jittered light position
+      glAccum(GL_LOAD, 0.0);
+      for (int i = 0; i < numJitters; ++i){
+          //jitter light
+          double x = ((double)rand()/(double)RAND_MAX) * jitterAmount;
+          if(rand() % 2) x = -x;
+          double y = ((double)rand()/(double)RAND_MAX) * jitterAmount;
+          if(rand() % 2) x = -y;
+          double z = ((double)rand()/(double)RAND_MAX) * jitterAmount;
+          if(rand() % 2) x = -z;
+          lightPos[0] = lightPos0[0]+x;
+          lightPos[1] = lightPos0[1]+y;
+          lightPos[2] = lightPos0[2]+z;
+          
+          drawScene(); // don't forget to call drawScene() for each jittered light position
+          glAccum(GL_ACCUM, .5);
+      }
+      glAccum(GL_RETURN, 1.0);
+    
 
   } else {
     /* for hard shadows, just draw the scene */
