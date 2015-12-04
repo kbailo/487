@@ -395,6 +395,36 @@ fbo_accum_init()
    * GL_FRAMEBUFFER_COMPLETE.
    */
 
+//    uint tex, fbo;
+//    glGenFramebuffers(1, &fbo);
+//    glGenTextures(1, &tex);
+//    glBindTexture(GL_TEXTURE_2D, tex);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 10);
+//    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP,
+//                    GL_TRUE);
+//    glTexImage2D(GL_TEXTURE_2D, 0, GL_COLOR_ATTACHMENT0, texture->GetImageWidth(), texture->GetImageHeight(), 0, GL_RGBA,
+//                 GL_UNSIGNED_BYTE, 0);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+//    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    
+//    glFramebufferTexture2D(	GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+//                           GL_TEXTURE_2D, tex, 0);
+    
+    
+//    GLuint rbod;
+//    glGenRenderbuffers(1, rbod);
+//    
+//    
+//    glBindRenderbuffer(GL_RENDERBUFFER, rbod);
+//    glBindRenderbuffer(GL_RENDERBUFFER, &rbod);
+//    glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA32F, width, height);
+//    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1,
+//                              GL_RENDERBUFFER, &rbod);
+
+
   // clear accumulation buffer
   glDrawBuffer(GL_COLOR_ATTACHMENT1);
   glClearColor(0.0, 0.0, 0.0, 0.0);

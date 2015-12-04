@@ -1,4 +1,4 @@
-/*
+short/*
  * Copyright (c) 2007, 2011, 2012 University of Michigan, Ann Arbor.
  * All rights reserved.
  *
