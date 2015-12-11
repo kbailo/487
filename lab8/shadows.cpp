@@ -572,7 +572,7 @@ display()
           lightPos[2] = lightPos0[2]+z;
           
           drawScene(); // don't forget to call drawScene() for each jittered light position
-          glAccum(GL_ACCUM, .5);
+          glAccum(GL_ACCUM, 1.0/numJitters);
       }
       glAccum(GL_RETURN, 1.0);
     
