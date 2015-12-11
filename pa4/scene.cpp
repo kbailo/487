@@ -1529,9 +1529,6 @@ X3ScalarInterpolator::SmoothInterpolation(float time)
         XVec3f b0 = XVec3f(1.0, -1.5, 0.5);
         XVec3f b1 = XVec3f(0, 2.0, -1.0);
         XVec3f b2 = XVec3f(0, -.5, .5);
-        //        XVec3f b0 = XVec3f(1, -.5, .125);
-        //        XVec3f b1 = XVec3f(0, 1, -.5);
-        //        XVec3f b2 = XVec3f(0, 0, .5);
         
         return (u3.dot(b0) * keyValue_[index] +
                 u3.dot(b1) * keyValue_[index+1] + u3.dot(b2) * keyValue_[index+2]);
@@ -1541,9 +1538,7 @@ X3ScalarInterpolator::SmoothInterpolation(float time)
         XVec3f b0 = XVec3f(0, -.5, .5);
         XVec3f b1 = XVec3f(1.0, 0, -1.0);
         XVec3f b2 = XVec3f(0, .5, .5);
-        //                XVec3f b0 = XVec3f(1, -.5, .125);
-        //                XVec3f b1 = XVec3f(0, 1, -.5);
-        //                XVec3f b2 = XVec3f(0, 0, .5);
+        
         return (u3.dot(b0) * keyValue_[index-1] + u3.dot(b1) * keyValue_[index] +
                 u3.dot(b2) * keyValue_[index+1]);
     }
@@ -1552,13 +1547,6 @@ X3ScalarInterpolator::SmoothInterpolation(float time)
     XVec4f b1 = XVec4f(1, 0, -2.5, 1.5);
     XVec4f b2 = XVec4f(0, .5, 2, -1.5);
     XVec4f b3 = XVec4f(0, 0, -.5, .5);
-    
-//        XVec4f b0 = XVec4f(0, 1, 0, 0);
-//        XVec4f b1 = XVec4f(-.5, 0, .5, 0);
-//        XVec4f b2 = XVec4f(1, -2.5, 2, -.5);
-//        XVec4f b3 = XVec4f(-.5, 1.5, -1.5, .5);
-    
-    
     
     return (u.dot(b0) * keyValue_[index-1] + u.dot(b1) * keyValue_[index] +
             u.dot(b2) * keyValue_[index+1] + u.dot(b3) * keyValue_[index+2]);
@@ -1650,9 +1638,6 @@ X3PositionInterpolator::SmoothInterpolation(float time)
         XVec3f b0 = XVec3f(1.0, -1.5, 0.5);
         XVec3f b1 = XVec3f(0, 2.0, -1.0);
         XVec3f b2 = XVec3f(0, -.5, .5);
-        //        XVec3f b0 = XVec3f(1, -.5, .125);
-        //        XVec3f b1 = XVec3f(0, 1, -.5);
-        //        XVec3f b2 = XVec3f(0, 0, .5);
         
         return (u3.dot(b0) * keyValue_[index] +
                 u3.dot(b1) * keyValue_[index+1] + u3.dot(b2) * keyValue_[index+2]);
@@ -1662,9 +1647,7 @@ X3PositionInterpolator::SmoothInterpolation(float time)
         XVec3f b0 = XVec3f(0, -.5, .5);
         XVec3f b1 = XVec3f(1.0, 0, -1.0);
         XVec3f b2 = XVec3f(0, .5, .5);
-        //                XVec3f b0 = XVec3f(1, -.5, .125);
-        //                XVec3f b1 = XVec3f(0, 1, -.5);
-        //                XVec3f b2 = XVec3f(0, 0, .5);
+        
         return (u3.dot(b0) * keyValue_[index-1] + u3.dot(b1) * keyValue_[index] +
                 u3.dot(b2) * keyValue_[index+1]);
     }
@@ -1673,13 +1656,6 @@ X3PositionInterpolator::SmoothInterpolation(float time)
     XVec4f b1 = XVec4f(1, 0, -2.5, 1.5);
     XVec4f b2 = XVec4f(0, .5, 2, -1.5);
     XVec4f b3 = XVec4f(0, 0, -.5, .5);
-    
-//    XVec4f b0 = XVec4f(0, 1, 0, 0);
-//    XVec4f b1 = XVec4f(-.5, 0, .5, 0);
-//    XVec4f b2 = XVec4f(1, -2.5, 2, -.5);
-//    XVec4f b3 = XVec4f(-.5, 1.5, -1.5, .5);
-    
-    
     
     return (u.dot(b0) * keyValue_[index-1] + u.dot(b1) * keyValue_[index] +
             u.dot(b2) * keyValue_[index+1] + u.dot(b3) * keyValue_[index+2]);
