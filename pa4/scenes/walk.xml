@@ -3,15 +3,64 @@
   <Scene>
     <Viewpoint description='View tree' orientation='1 0 0 -0.2' position='2 4 15'/>
     <Timer DEF='timer_slow' shift='0.0' period='5.0'/> 
-    <Timer DEF='timer_fast' shift='0.0' period='0.25'/> 
+    <Timer DEF='timer_fast' shift='0.0' period='1.0'/>
     <Timer DEF='timer'/>
     <PositionInterpolator DEF='jumper'
                           key='0 1 2 3 40' 
                           keyValue='0 0 0, 1 0 0, 1.5 1 0, 0.5 2 0, -0.5 1 0'/>
     <OrientationInterpolator DEF='rotator' 
                           key='0 0.5 1' 
-                          keyValue='1 0 0 -0.785, 1 0 0 0.785, 1 0 0 -0.785'/>
-    <PositionInterpolator DEF='sitter' key='0 0.5 1.0' 
+                          keyValue='1 0 0 -0.3, 1 0 0 0.3, 1 0 0 -0.3'/>
+                          
+    <OrientationInterpolator DEF='left'
+                          key='0 0.5 1'
+                          keyValue='1 0 0 -0.55, 1 0 0 0.55, 1 0 0 -0.55'/>
+    <OrientationInterpolator DEF='low_left'
+                          key='0 0.5 1'
+                          keyValue='1 0 0 -0.55, 1 0 0 0, 1 0 0 -0.55'/>
+                          
+    <OrientationInterpolator DEF='right'
+                          key='0 0.5 1'
+                          keyValue='1 0 0 0.55, 1 0 0 -0.55, 1 0 0 0.55'/>
+    <OrientationInterpolator DEF='low_right'
+                          key='0 0.5 1'
+                          keyValue='1 0 0 0, 1 0 0 -0.55, 1 0 0 0'/>
+    
+                          
+    
+                          
+    <!--<OrientationInterpolator DEF='leftfoot'
+                          key='0 0.25 .5 .75 1'
+                          keyValue='1 0 0 .35, 1 0 0 0, 1 0 0 -0.2, 1 0 0 .5, 1 0 0 .35'/>
+                          -->
+    <OrientationInterpolator DEF='rightfoot'
+                        key = '0 .1 .2 .35 .5 .6 .7 .8 .9 1'
+                        keyValue = '
+                                    1 0 0 .1,
+                                    1 0 0 -.4,
+                                    1 0 0 0,
+                                    1 0 0 .7,
+                                    1 0 0 .7,
+                                    1 0 0 .6,
+                                    1 0 0 .4,
+                                    1 0 0 .2,
+                                    1 0 0 .1,
+                                    1 0 0 .1
+                                    '/>
+
+    <OrientationInterpolator DEF='leftfoot'
+                          key = '0 .3 .4 .5 .6 .7 .85 1'
+                          keyValue = '1 0 0 .7,
+                                      1 0 0 .2,
+                                      1 0 0 .1,
+                                      1 0 0 .1,
+                                      1 0 0 -.4,
+                                      1 0 0 0,
+                                      1 0 0 .7,
+                                      1 0 0 .7'/>
+                          
+                          
+    <PositionInterpolator DEF='sitter' key='0 0.5 1.0'
         keyValue='1 1 1, 1.4 0.3 1.4, 1 1 1' smooth='true'/>
     <ScalarInterpolator DEF='squeezer' key='0 0.25 0.5 0.75 1.0' 
         keyValue='2 3 3 2.5 2' smooth='true'/>
@@ -19,121 +68,266 @@
       <PointLight ambientIntensity='0.05' color='1 1 0.2' intensity='0.3' location='0 10 0'/>
       <!-- ground -->
       <Shape>
-        <Box size='25 0.1 25'/>
+        <Box size='25 0.1 6'/>
         <Appearance>
-          <Material diffuseColor='0.75 0.75 0.5'/>
+          <Material diffuseColor='0.8 0.0 0.8'/>
         </Appearance>
       </Shape>
       <!-- end ground -->
       
       <!-- orange rollercoaster -->
-	  <Transform translation='1 0.5 3'>
-    
-          <Shape>
-              <Curve>
+	  <Transform translation='0 0 0'>
                 <PositionInterpolator DEF='chris' smooth='true'
-                                      key='0 0 0.25 0.5 0.75 1 1'
+                                      key='0 0
+                                      .05
+                                      .1
+                                      .15
+                                      .2
+                                      .25
+                                      .3
+                                      .35
+                                      .4
+                                      .45
+                                      .5
+                                      .55
+                                      .6
+                                      .65
+                                      .7
+                                      .75
+                                      .8
+                                      .85
+                                      .9
+                                      .95
+                                      1 1'
+                                      
                                       keyValue='
-                                        0 0 0
-                                        0 0 0
-                                        0 5 0
-                                        5 5 0
-                                        5 0 0
-                                        0 0 0
-                                        0 0 0'
-                />  
-              </Curve>
-          </Shape>
-          <Transform DEF='red_cyl' translation='0.0 0.0 0.0'>
+                                        12.5 3 0
+                                        12.5 3 0
+                                        11.25 3.3 0
+                                        10 3 0
+                                        8.75 3.3 0
+                                        7.5 3 0
+                                        6.25 3.3 0
+                                        5 3 0
+                                        3.75 3.3 0
+                                        2.5 3 0
+                                        1.25 3.3 0
+                                        0 3 0
+                                        -1.25 3.3 0
+                                        -2.5 3 0
+                                        -3.75 3.3 0
+                                        -5 3 0
+                                        -6.25 3.3 0
+                                        -7.5 3 0
+                                        -8.75 3.3 0
+                                        -10 3 0
+                                        -11.25 3.3 0
+                                        -12.5 3 0
+                                        -12.5 3 0'
+                />
+          <Transform DEF='stairs' translation= '0 0 0'>
+          <Transform DEF='body_cone' translation='0 0 0'>
             <Shape>
-            <Cylinder radius='0.2' height='0.5'/>
-            <Appearance>
-                <Material diffuseColor='0.2 0.2 0' emissiveColor='0.8 0.2 0.2'/>
-            </Appearance>
+                <Cone bottomRadius='1.1' height='3.75'/>
+                <Appearance>
+                    <Material diffuseColor='0.8 .1 0.3'/>
+                </Appearance>
             </Shape>
-            <PointLight ambientIntensity='0.9' 
-                        attenuation='1 0.21 0' 
-                        color='1 0.4 0.2' intensity='0.9' 
-                        location='0 0 0'/>
+            <Transform DEF='heads_will_roll' center='0 1 0'>
+            <Transform translation='0 1.5 0'> <!-- head -->
+                <Shape>
+                    <Cylinder radius='.7' height='1' center='0 0 0' />
+                    <Appearance>
+                        <Material diffuseColor='0 1 1'/>
+                    </Appearance>
+                </Shape>
+                <Transform rotation='.5 0 1 1.6' translation='-.25 .2 0'><!-- eye -->
+                <Shape>
+                    <Cylinder radius='.1' height='1' />
+                    <Appearance>
+                        <Material diffuseColor='.5 .5 .5'/>
+                    </Appearance>
+                </Shape>
+                </Transform>
+                <Transform rotation='-.5 0 1 1.6' translation='-.25 .2 0'> <!-- other eye -->
+                    <Shape>
+                        <Cylinder radius='.1' height='1' />
+                        <Appearance>
+                            <Material diffuseColor='.5 .5 .5'/>
+                        </Appearance>
+                    </Shape>
+                </Transform>
+                <Transform translation='-.24 -.25 0' rotation='0 0 1 -2'> <!-- :D -->
+                    <Shape>
+                        <Cone bottomRadius='.3' height='1.0
+                        ' />
+                        <Appearance>
+                            <Material diffuseColor='.5 .5 .5'/>
+                        </Appearance>
+                    </Shape>
+                </Transform>
+            </Transform> <!-- end head -->
+            </Transform>
+            
+            <Transform translation='0 -1.8 0.4'> <!-- left upper leg -->
+               <Transform rotation= '0 1 0 1.6'>
+                   <Transform DEF='left_thigh' center = '0 1 0'>
+                    
+                        <Shape>
+                            <Cylinder radius='.25' height='1'/>
+                            <Appearance>
+                                <Material diffuseColor='0 1 1'/>
+                            </Appearance>
+                        </Shape>
+                        <Transform translation='0 -.8 0'>
+                            <Transform DEF='left_shin' center = '0 .5 0'>
+                                <Shape>
+                                    <Cylinder radius = '.2' height = '.9' />
+                                    <Appearance>
+                                        <Material diffuseColor='0 1 1'/>
+                                    </Appearance>
+                                </Shape>
+                                <Transform translation='0 -.4 -.3'>
+                                    <Transform DEF='left_foot'>
+                                        <Shape>
+                                            <Box size='.4 .3 1'/>
+                                            <Appearance>
+                                                <Material diffuseColor='0.8 0.0 0.8'/>
+                                            </Appearance>
+
+                                        </Shape>
+                                    </Transform>
+                                </Transform>
+                            </Transform>
+                        </Transform>
+                    </Transform>
+                </Transform>
+            </Transform><!-- end left leg-->
+            
+            <Transform translation='0 -1.8 -0.4'> <!-- right upper leg -->
+                <Transform rotation= '0 1 0 1.6'>
+                    <Transform DEF='right_thigh' center = '0 1 0'>
+                        <Shape>
+                            <Cylinder radius='.25 ' height='1'/>
+                            <Appearance>
+                                <Material diffuseColor='0 1 1'/>
+                            </Appearance>
+                        </Shape>
+                        <Transform translation='0 -.8 0'>
+                            <Transform DEF='right_shin' center = '0 .5 0'>
+                                <Shape>
+                                    <Cylinder radius = '.2' height = '.9' />
+                                    <Appearance>
+                                        <Material diffuseColor='0 1 1'/>
+                                    </Appearance>
+                                </Shape>
+                                <Transform translation='0 -.4 -.3'>
+                                    <Transform DEF='right_foot'>
+                                        <Shape>
+                                            <Box size='.4 .3 1'/>
+                                            <Appearance>
+                                                <Material diffuseColor='0.8 0.0 0.8'/>
+                                            </Appearance>
+                                            
+                                        </Shape>
+                                    </Transform>
+                                </Transform>
+                                
+                            </Transform>
+                        
+                        </Transform>
+                    </Transform>
+                </Transform>
+            </Transform><!-- end right leg-->
+            
+            <Transform translation='0 0 -.75'> <!-- right arm -->
+                <Transform rotation= '.4 1 .4 1.6'>
+                    <Transform DEF='right_arm' center = '0 1.25 0'>
+                        <Shape>
+                            <Cylinder radius = '.15' height='2.25' />
+                            <Appearance>
+                                <Material diffuseColor='0 1 1'/>
+                            </Appearance>
+                        </Shape>
+                    </Transform>
+                </Transform>
+            </Transform>
+            <Transform translation='0 0 .75'> <!-- right arm -->
+                <Transform rotation= '-.4 1 -.4 1.6'>
+                    <Transform DEF='left_arm' center = '0 1.25 0'>
+                        <Shape>
+                            <Cylinder radius = '.15' height='2.25' />
+                            <Appearance>
+                                <Material diffuseColor='0 1 1'/>
+                            </Appearance>
+                        </Shape>
+                    </Transform>
+                </Transform>
+            </Transform>
+            
+            
+            <PointLight ambientIntensity='0.9'
+            attenuation='1 0.21 0'
+            color='1 0.4 0.2' intensity='0.9'
+            location='0 0 0'/>
+            
+            <Transform translation='2 0 5'>
+            <PointLight ambientIntensity='0.9'
+            attenuation='1 0.21 0'
+            color='1 0.4 0.2' intensity='0.9'
+            location='0 0 0'/>
+            </Transform>
+            <Transform translation='0 3 4'>
+            <PointLight ambientIntensity='0.9'
+            attenuation='1 0.21 0'
+            color='1 0.4 0.2' intensity='0.9'
+            location='0 0 0'/>
+            </Transform>
           </Transform>
-          <Link TIMER='timer_slow' INTERPOLATOR='chris' 
-                TO_NODE='red_cyl' TO_FIELD='translation'/>
+          
+          </Transform>
+          
+          <Link TIMER='timer_slow' INTERPOLATOR='chris'
+                TO_NODE='body_cone' TO_FIELD='translation'/>
+          <Link TIMER='timer_fast' INTERPOLATOR='rotator'
+                TO_NODE = 'heads_will_roll' TO_FIELD='rotation'/>
+          
+                
+          <Link TIMER='timer_fast'
+                INTERPOLATOR='left'
+                TO_NODE='left_thigh' TO_FIELD='rotation'/>
+                
+          <Link TIMER='timer_fast'
+                INTERPOLATOR='right'
+                TO_NODE='right_thigh' TO_FIELD='rotation'/>
+                
+          <Link TIMER='timer_fast'
+                INTERPOLATOR='low_right'
+                TO_NODE='right_shin' TO_FIELD='rotation'/>
+                
+          <Link TIMER='timer_fast'
+                INTERPOLATOR='low_left'
+                TO_NODE='left_shin' TO_FIELD='rotation'/>
+                
+          <Link TIMER='timer_fast'
+                INTERPOLATOR='leftfoot'
+                TO_NODE='left_foot' TO_FIELD='rotation'/>
+                
+          <Link TIMER='timer_fast'
+                INTERPOLATOR='rightfoot'
+                TO_NODE='right_foot' TO_FIELD='rotation'/>
+                
+          <Link TIMER='timer_fast'
+                INTERPOLATOR='right'
+                TO_NODE='left_arm' TO_FIELD='rotation'/>
+                
+          <Link TIMER='timer_fast'
+                INTERPOLATOR='left'
+                TO_NODE='right_arm' TO_FIELD='rotation'/>
 	  </Transform>
       <!-- end orange rollercoaster -->
       
       
-      <Transform center='0 -1 0' translation='0 1 0'>
-        <Shape>
-          <Cylinder radius='0.2'/>
-          <Appearance>
-            <Material diffuseColor='0.2 0.2 0' specularColor='0.8 0.2 0.5'/>
-          </Appearance>
-        </Shape>
-        
-        <!-- displaces squish -->
-        <Transform translation='0 0 4'>
-         
-            <Transform DEF='squish' scale='1 1 1' center='0 -1 0'>
-                <Shape>
-                <Cylinder radius='0.2'/>
-                <Appearance>
-                    <Material diffuseColor='0.0 0.4 0'/>
-                </Appearance>
-                </Shape>
-            </Transform>
-         
-            
-        </Transform>
-        <!-- wiggly -->
-        <Transform DEF='pendulum' translation='4 0 4' rotation='0 0 1 0.8' center='0 -1 0'>
-         <!-- lower wiggly -->
-        <Shape>
-          <Cylinder radius='0.2'/>
-          <Appearance>
-            <Material ambientIntensity='0.4' diffuseColor='0.22 0.15 0' shininess='0.16' specularColor='0.71 0.70 0.56'/>
-	      </Appearance>
-	     </Shape>
-          <!-- end lower wiggly -->
-          
-            <!-- displace upper wiggly so its on top of lower wiggly -->
-            <Transform translation='0 2 0' rotation='0 1 0 1.6'>
-             
-                <!-- upper wiggly -->
-                <Transform DEF='pend2' center='0 -1 0'>
-                    <Shape>
-                        <Cylinder radius='0.15'/>
-                    </Shape>
-                </Transform>
-                 <!-- end upper wiggly -->
-            
-            </Transform>
-            
-        </Transform>
-        <!-- end wiggly -->
-        
-        <Link TIMER='timer_slow' 
-              INTERPOLATOR='rotator' 
-              TO_NODE='pendulum' TO_FIELD='rotation'/>
-        <Link TIMER='timer_slow' 
-              INTERPOLATOR='sitter' 
-              TO_NODE='squish' TO_FIELD='scale'/>
-        <Link TIMER='timer_fast' 
-              INTERPOLATOR='rotator' 
-              TO_NODE='pend2' TO_FIELD='rotation'/>
-            <!-- treecone -->
-        <Transform translation='0 3 0'>
-          <Shape>
-            <Cone DEF='treecone' bottomRadius='2' height='4'/>
-            <Appearance>
-              <Material diffuseColor='0.1 0.8 0'/>
-            </Appearance>
-          </Shape>
-        </Transform>
-             <!-- end tree cone -->
-      </Transform>
     </Group>
-    <Link TIMER='timer_slow' 
-          INTERPOLATOR='squeezer' 
-          TO_NODE='treecone' TO_FIELD='bottomRadius'/>
   </Scene>
 </X3D>
